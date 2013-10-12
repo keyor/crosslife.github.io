@@ -1,0 +1,347 @@
+<!--
+Google IO 2012 HTML5 Slide Template
+
+Authors: Eric Bidelman <ebidel@gmail.com>
+         Luke Mahe <lukem@google.com>
+
+URL: https://code.google.com/p/io-2012-slides
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" media="all" href="theme/css/default.css">
+  <link rel="stylesheet" media="all" href="theme/css/app.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+</head>
+<body style="opacity: 0">
+
+<slides class="layout-widescreen">
+
+<!-- <slide class="logoslide nobackground">
+  <article class="flexbox vcenter">
+    <span><img src="images/google_developers_logo.png"></span>
+  </article>
+</slide>
+ -->
+<slide class="title-slide segue nobackground">
+  <aside class="gdbar">
+    <img src="images/chrome-ext-big-logo.png">
+  </aside>
+  <hgroup>
+    <h1 data-config-title><!-- populated from slide_config.json --></h1>
+    <p>@wong2</p>
+  </hgroup>
+</slide>
+
+
+<slide class="big" >
+  
+    <hgroup>
+      <h2>Chrome扩展</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><ul class="build">
+<li>
+<p>扩展Chrome的功能</p>
+</li>
+<li>
+<p>扩展网站的功能</p>
+</li>
+<li>
+<p>绝大部分用Web技术开发 (HTML + CSS + JavaScript)</p>
+</li>
+</ul></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Demo</h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter"><p><img alt="Hello World" src="images/hello_world.png" /></p></article>
+ 
+</slide>
+
+<slide class="big" >
+  
+    <hgroup>
+      <h2>Manifest文件</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><ul>
+<li>
+<p>必须有</p>
+</li>
+<li>
+<p>JSON格式(manifest.json)</p>
+</li>
+<li>
+<p>描述了关于扩展的各种重要信息</p>
+</li>
+<li>
+<p><a href="https://developer.chrome.com/extensions/manifest.html">格式文档</a></p>
+</li>
+</ul>
+<pre class="prettyprint" data-lang="json">
+{
+  "manifest_version": 2,
+  "name": "My Extension",
+  "version": "1.0.0",
+  "description": "The best extension",
+  "icons": {...},
+  ...
+}
+</pre></article>
+ 
+</slide>
+
+<slide class="big" >
+  
+    <hgroup>
+      <h2>改变浏览器UI</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><ul>
+<li>Broswer Actions *</li>
+<li>Page Actions (<a href="images/page-action.png">♆</a>)</li>
+<li>Context Menus</li>
+<li>Desktop Notifications (<a href="images/notification-mac.png">♆</a>)</li>
+<li>Overide Pages</li>
+</ul></article>
+ 
+</slide>
+
+<slide class="big" >
+  
+    <hgroup>
+      <h2>Broswer Actions</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><p><img alt="browser action" src="images/browser-action.png" /></p>
+<ul>
+<li>badge</li>
+<li>popup</li>
+</ul>
+<pre class="prettyprint" data-lang="json">
+// in manifest.json
+{
+    'browser_action': {
+        'default_icon': 'icon.png',
+        'default_popup': 'popup.html'
+    },
+    ...
+}
+</pre></article>
+ 
+</slide>
+
+<slide class="big" >
+  
+    <hgroup>
+      <h2>Content Scripts</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><ul>
+<li>
+<p>一些在Web页面里运行的JS代码，通过共享的DOM与页面交互(<a href="images/share-dom.png">♆</a>)</p>
+</li>
+<li>
+<p>隔离的环境，不能访问页面里定义的全局变量</p>
+</li>
+</ul>
+<pre class="prettyprint" data-lang="json">
+// in manifest.json
+{
+  "content_scripts": [
+      {
+        "matches": ["http://www.douban.com/*"],
+        "css": ["mystyles.css"],
+        "js": ["jquery.js", "myscript.js"]
+      }
+  ],
+  ...
+}
+</pre></article>
+ 
+</slide>
+
+<slide class="big" >
+  
+    <hgroup>
+      <h2>Background Pages & Event Pages</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><ul>
+<li>
+<p>在后台运行的脚本</p>
+</li>
+<li>
+<p>通常用来监听一些事件</p>
+</li>
+</ul></article>
+ 
+</slide>
+
+<slide class="big" >
+  
+    <hgroup>
+      <h2>Background Pages</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><ul>
+<li>从浏览器启动就开始在后台运行</li>
+</ul>
+<pre class="prettyprint" data-lang="json">
+// in manifest.json
+{
+  "background": {
+      "scripts": ["background.js"]
+  },
+}
+</pre>
+
+<ul>
+<li>尽量用Event Pages取代</li>
+</ul></article>
+ 
+</slide>
+
+<slide class="big" >
+  
+    <hgroup>
+      <h2>Event Pages</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><ul>
+<li>按需加载(只有需要的事件触发时，才会被执行)</li>
+</ul>
+<pre class="prettyprint" data-lang="json">
+// in manifest.json
+{
+  "background": {
+      "scripts": ["eventPage.js"]
+      "persistent": false
+  },
+}
+</pre></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Demo</h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter"><p>豆瓣提醒</p>
+<p><img alt="" src="images/douban-notification.png" /></p></article>
+ 
+</slide>
+
+<slide class="big" >
+  
+    <hgroup>
+      <h2>跨域Ajax</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><pre class="prettyprint" data-lang="json">
+// in manifest.json
+{
+  "permissions": [
+      "http://www.douban.com/"
+  ],
+  ...
+}
+</pre></article>
+ 
+</slide>
+
+<slide class="big" >
+  
+    <hgroup>
+      <h2>chrome.* API</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><ul>
+<li>bookmarks</li>
+<li>cookies</li>
+<li>downloads</li>
+<li>history</li>
+<li>location</li>
+<li>notifications</li>
+<li>pageCapture</li>
+<li>proxy</li>
+<li>tabs</li>
+<li>...</li>
+</ul></article>
+ 
+</slide>
+
+<slide class="big" >
+  
+    <hgroup>
+      <h2>发布</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><ul>
+<li>发布到应用商店(Chrome Web Store)</li>
+</ul>
+<p><img alt="" src="images/chrome-web-store.png" /></p>
+<ul>
+<li>自己打包成crx文件，自己托管</li>
+</ul></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>谢谢！</h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter"><p>新技能got √</p>
+<p><img alt="dora" src="images/dorachrome.png" /></p></article>
+ 
+</slide>
+
+
+<!-- <slide class="logoslide dark nobackground">
+  <article class="flexbox vcenter">
+    <span><img src="images/google_developers_logo_white.png"></span>
+  </article>
+</slide> -->
+
+<slide class="backdrop"></slide>
+
+</slides>
+
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-XXXXXXXX-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
